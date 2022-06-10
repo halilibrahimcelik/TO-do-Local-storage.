@@ -2,10 +2,13 @@
 const taskInput = document.querySelector(".task-input");
 const taskSubmit = document.querySelector(".task-button");
 const taskList = document.querySelector(".task-list");
+const filterTask = document.querySelector(".filter-tasks");
 //!event listeners
 
 taskSubmit.addEventListener("click", addTodo);
 taskList.addEventListener("click", removeTodo);
+taskList.addEventListener("click", checkCompleted);
+filterTask.addEventListener("click", filterTaskLists);
 
 //!Functions
 
@@ -40,8 +43,75 @@ function addTodo(e) {
 //Removing  a todo
 function removeTodo(e) {
   if (e.target.classList.contains("fa-trash")) {
-    e.target.parentElement.parentElement.remove();
+    e.target.parentElement.parentElement.classList.add("fall");
+    setTimeout(() => {
+      e.target.parentElement.parentElement.remove();
+      console.log("yay");
+    }, 1000);
   }
 }
 
-function checkCompleted(e) {}
+function checkCompleted(e) {
+  if (e.target.classList.contains("fa-check")) {
+    const todoList = e.target.parentElement.parentElement;
+    todoList.classList.toggle("completed");
+  }
+}
+
+function filterTaskLists(e) {
+  const todos = taskList.childNodes;
+  console.log(todos);
+
+  console.log(e.target.value);
+  //   todos.forEach((todo) => {
+  //     console.log(todo.firstChild.classList.contains("completed"));
+
+  //     if (e.target.value === "all") {
+  //       return (todo.firstChild.style.display = "flex");
+  //     }
+  //     if (e.target.value === "completed") {
+  //       console.log("ok");
+
+  //       if (todo.firstChild.classList.contains("completed")) {
+  //         console.log("ok2");
+  //         todo.style.display = "flex";
+  //       } else {
+  //         console.log("ok3");
+  //         todo.style.display = "none";
+  //       }
+  //       return;
+  //     }
+  //     if (e.target.value === "uncompleted") {
+  //       if (!todo.firstChild.classList.contains("completed")) {
+  //         todo.style.display = "flex";
+  //       } else {
+  //         todo.style.display = "none";
+  //       }
+  //     }
+  //     return;
+  //   });
+
+  todos.forEach(function (todo) {
+    switch (e.target.value) {
+      case "all":
+        todo.style.display = "flex";
+        console.log(todo.className);
+        break;
+      case "completed":
+        console.log(todo.firstChild.classList.contains("completed"));
+        if (todo.firstChild.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          console.log("nana");
+          todo.style.display = "none";
+        }
+        break;
+      case "uncompleted":
+        if (!todo.firstChild.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          todo.style.display = "none";
+        }
+    }
+  });
+}
