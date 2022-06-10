@@ -5,10 +5,16 @@ const taskList = document.querySelector(".task-list");
 //!event listeners
 
 taskSubmit.addEventListener("click", addTodo);
+taskList.addEventListener("click", removeTodo);
 
 //!Functions
 
 function addTodo(e) {
+  if (taskInput.value === "") {
+    alert("please enter a task");
+    e.preventDefault();
+    return;
+  }
   e.preventDefault();
   const divTodo = document.createElement("div");
   const newListTodo = document.createElement("li");
@@ -30,3 +36,12 @@ function addTodo(e) {
   taskList.appendChild(divTodo);
   taskInput.value = "";
 }
+
+//Removing  a todo
+function removeTodo(e) {
+  if (e.target.classList.contains("fa-trash")) {
+    e.target.parentElement.parentElement.remove();
+  }
+}
+
+function checkCompleted(e) {}
