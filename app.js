@@ -4,7 +4,7 @@ const taskSubmit = document.querySelector(".task-button");
 const taskList = document.querySelector(".task-list");
 const filterTask = document.querySelector(".filter-tasks");
 //!event listeners
-
+document.addEventListener("DOMContentLoaded", getOurTasks);
 taskSubmit.addEventListener("click", addTodo);
 taskList.addEventListener("click", removeTodo);
 taskList.addEventListener("click", checkCompleted);
@@ -33,10 +33,12 @@ function addTodo(e) {
   deletedBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
   newListTodo.insertAdjacentElement("afterbegin", completedBtn);
   newListTodo.insertAdjacentElement("beforeend", deletedBtn);
-  //   newListTodo.insertAdjacentHTML(deletedBtn);
-  //   newListTodo.append(completedBtn, deletedBtn);
+
   divTodo.appendChild(newListTodo);
   taskList.appendChild(divTodo);
+
+  //!adding inputs to local storage
+  saveOurTasks(taskInput.value);
   taskInput.value = "";
 }
 
@@ -45,6 +47,7 @@ function removeTodo(e) {
   if (e.target.classList.contains("fa-trash")) {
     e.target.parentElement.parentElement.classList.add("fall");
     setTimeout(() => {
+      removeOurTasks(e.target.parentElement.parentElement.innerText);
       e.target.parentElement.parentElement.remove();
       console.log("yay");
     }, 1000);
@@ -114,4 +117,61 @@ function filterTaskLists(e) {
         }
     }
   });
+}
+
+function saveOurTasks(task) {
+  let todos;
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+
+  todos.push(task);
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function getOurTasks(task) {
+  let todos;
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+  todos.forEach((todo) => {
+    const divTodo = document.createElement("div");
+    const newListTodo = document.createElement("li");
+    const completedBtn = document.createElement("button");
+    const deletedBtn = document.createElement("button");
+    divTodo.classList.add("todoDiv");
+    newListTodo.classList.add("todo-list");
+    completedBtn.classList.add("complete-btn");
+    deletedBtn.classList.add("delete-btn");
+    newListTodo.innerText = todo;
+    completedBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+
+    deletedBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
+    newListTodo.insertAdjacentElement("afterbegin", completedBtn);
+    newListTodo.insertAdjacentElement("beforeend", deletedBtn);
+
+    divTodo.appendChild(newListTodo);
+    taskList.appendChild(divTodo);
+  });
+}
+
+function removeOurTasks(taskIndex) {
+  let todos;
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+  const todoIndex = taskIndex;
+  todos.splice(todos.indexOf(todoIndex), 1);
+  localStorage.setItem("todos", JSON.stringify(todos));
+
+  //IndexOf gives us the position of that innerText;
+  //from there with splice - we delete 1 value in the localStorage.
+  // //   console.log(tasks.children());
+  //   console.log(todos.indexOf("mehmet")); //indexOf give me the position
 }
