@@ -81,13 +81,13 @@ function filterTaskLists(e) {
   todos.forEach(function (todo) {
     switch (e.target.value) {
       case "all":
-        todo.style.display = "flex";
+        todo.style.display = "block";
         console.log(todo.className);
         break;
       case "completed":
         console.log(todo.firstChild.classList.contains("completed"));
         if (todo.firstChild.classList.contains("completed")) {
-          todo.style.display = "flex";
+          todo.style.display = "block";
         } else {
           console.log("nana");
           todo.style.display = "none";
@@ -95,7 +95,7 @@ function filterTaskLists(e) {
         break;
       case "uncompleted":
         if (!todo.firstChild.classList.contains("completed")) {
-          todo.style.display = "flex";
+          todo.style.display = "block";
         } else {
           todo.style.display = "none";
         }
