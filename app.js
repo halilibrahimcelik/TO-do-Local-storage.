@@ -19,23 +19,7 @@ function addTodo(e) {
     return;
   }
   e.preventDefault();
-  const divTodo = document.createElement("div");
-  const newListTodo = document.createElement("li");
-  const completedBtn = document.createElement("button");
-  const deletedBtn = document.createElement("button");
-  divTodo.classList.add("todoDiv");
-  newListTodo.classList.add("todo-list");
-  completedBtn.classList.add("complete-btn");
-  deletedBtn.classList.add("delete-btn");
-  newListTodo.innerText = taskInput.value;
-  completedBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
-
-  deletedBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
-  newListTodo.insertAdjacentElement("afterbegin", completedBtn);
-  newListTodo.insertAdjacentElement("beforeend", deletedBtn);
-
-  divTodo.appendChild(newListTodo);
-  taskList.appendChild(divTodo);
+  addTaskToDom(taskInput.value);
 
   //!adding inputs to local storage
   saveOurTasks(taskInput.value);
@@ -131,7 +115,7 @@ function saveOurTasks(task) {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-function getOurTasks(task) {
+function getOurTasks() {
   let todos;
   if (localStorage.getItem("todos") === null) {
     todos = [];
@@ -139,23 +123,7 @@ function getOurTasks(task) {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
   todos.forEach((todo) => {
-    const divTodo = document.createElement("div");
-    const newListTodo = document.createElement("li");
-    const completedBtn = document.createElement("button");
-    const deletedBtn = document.createElement("button");
-    divTodo.classList.add("todoDiv");
-    newListTodo.classList.add("todo-list");
-    completedBtn.classList.add("complete-btn");
-    deletedBtn.classList.add("delete-btn");
-    newListTodo.innerText = todo;
-    completedBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
-
-    deletedBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
-    newListTodo.insertAdjacentElement("afterbegin", completedBtn);
-    newListTodo.insertAdjacentElement("beforeend", deletedBtn);
-
-    divTodo.appendChild(newListTodo);
-    taskList.appendChild(divTodo);
+    addTaskToDom(todo);
   });
 }
 
@@ -174,4 +142,23 @@ function removeOurTasks(taskIndex) {
   //from there with splice - we delete 1 value in the localStorage.
   // //   console.log(tasks.children());
   //   console.log(todos.indexOf("mehmet")); //indexOf give me the position
+}
+function addTaskToDom(value) {
+  const divTodo = document.createElement("div");
+  const newListTodo = document.createElement("li");
+  const completedBtn = document.createElement("button");
+  const deletedBtn = document.createElement("button");
+  divTodo.classList.add("todoDiv");
+  newListTodo.classList.add("todo-list");
+  completedBtn.classList.add("complete-btn");
+  deletedBtn.classList.add("delete-btn");
+  newListTodo.innerText = value;
+  completedBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+
+  deletedBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
+  newListTodo.insertAdjacentElement("afterbegin", completedBtn);
+  newListTodo.insertAdjacentElement("beforeend", deletedBtn);
+
+  divTodo.appendChild(newListTodo);
+  taskList.appendChild(divTodo);
 }
